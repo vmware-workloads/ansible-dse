@@ -1,6 +1,10 @@
-- name: create search pattern
+#
+# This needs to be rewritten without creating a file on disk. CL
+#
+- name: Set task variables
   ansible.builtin.set_fact:
     dc_pattern: '^dse_dc\d+$'
+    seed_list_file: "/tmp/seed_list"
 
 - name: "Find list of datacenter groups that match '{{ dc_pattern }}'"
   ansible.builtin.set_fact:
@@ -23,12 +27,12 @@
 - name: Template seed list
   ansible.builtin.template:
     src: seeds.j2
-    dest: /tmp/seed_list
+    dest: "{{ seed_list_file }}"
     mode: "0664"
 
 - name: Load seed list
   ansible.builtin.shell:
-    cmd: cat /tmp/seed_list
+    cmd: "cat {{ seed_list_file }}"
   register: seed_list
 
 - name: Set seeds fact
