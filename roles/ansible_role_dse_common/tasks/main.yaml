@@ -1,0 +1,15 @@
+---
+- name: Template seed list
+  ansible.builtin.template:
+    src: seeds.j2
+    dest: /tmp/seed_list
+    mode: "0664"
+
+- name: Load seed list
+  ansible.builtin.shell:
+    cmd: cat /tmp/seed_list
+  register: seed_list
+
+- name: Set seeds fact
+  ansible.builtin.set_fact:
+    seeds: "{{ seed_list.stdout }}"

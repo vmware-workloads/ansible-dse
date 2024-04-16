@@ -35,16 +35,15 @@
   roles:
     - ansible_role_configure_os
 
-#
-## Install and configure DSE
-#- hosts: dse
-#  any_errors_fatal: true
-#  become: true
-#  become_method: sudo
-#  roles:
-#    - { role: dse_common }
-#    - { role: dse_instbin }
-#    - { role: dse_updcfg }
+- name: Install and configure DSE
+  hosts: dse
+  any_errors_fatal: true
+  become: true
+  become_method: sudo
+  roles:
+    - ansible_role_dse_common
+    - ansible_role_install_binaries
+    - ansible_role_update_configuration
 #
 ## Configure JVM options
 #- hosts: dse

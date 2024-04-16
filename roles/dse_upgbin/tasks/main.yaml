@@ -37,4 +37,4 @@
 
 - name: Install the specified DSE version 
   include_role:
-    name: dse_instbin
+    name: ansible_role_install_binaries
