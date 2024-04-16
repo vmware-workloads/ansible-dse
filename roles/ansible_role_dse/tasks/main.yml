@@ -1,5 +1,5 @@
 - name: Create seed list
   ansible.builtin.include_tasks: ansible_task_create_seed_list.yml
 
-#- name: Mount disks
-#  ansible.builtin.include_tasks: ansible_task_mount_disks.yml
+- name: Mount disks
+  ansible.builtin.include_tasks: ansible_task_mount_disks.yml

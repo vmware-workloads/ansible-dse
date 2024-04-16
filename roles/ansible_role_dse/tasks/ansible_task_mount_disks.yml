@@ -3,6 +3,15 @@
     gather_subset:
       - hardware
 
+- name: Set task variables
+  ansible.builtin.set_fact:
+    disks:
+      - /dev/sdb
+      - /dev/sdc
+    mount_paths:
+      - "{{ default_dse_data_homedir }}"
+      - "{{ default_dse_syslog_dir }}"
+
 - name: Gather the list of mounted devices
   ansible.builtin.shell:
     cmd: >
@@ -40,44 +49,21 @@
   ansible.builtin.debug:
     var: unused_disks
 
-- name: partition disks
-  community.general.parted:
-    device: "/dev/{{ item }}"
-    number: 1
-    state: present
-    label: gpt
-    name: data
-    resize: true
-  loop: "{{ unused_disks }}"
+- name: Check the required number of disks on the host
+  ansible.builtin.assert:
+    - 'sdb' in all_disks.stdout_lines
+    - 'sdc' in all_disks.stdout_lines
 
-- name: create filesystem
-  community.general.filesystem:
-    fstype: "{{ data_filesystem }}"
-    dev: "/dev/{{ item }}1"
-  loop: "{{ unused_disks }}"
+- name: Create xfs filesystem
+  filesystem:
+    fstype: xfs
+    dev: "{{ item }}"
+  loop: "{{ disks }}"
 
-- name: mount data volumes
+- name: Mount disks
   ansible.posix.mount:
-    src: "/dev/{{ item }}1"
-    path: "{{ crdb_folder }}/data{{ index }}"
-    opts: defaults
+    path: "{{ item.1 }}"
+    src: "{{ item.0 }}"
+    fstype: xfs
     state: mounted
-    fstype: "{{ data_filesystem }}"
-  loop: "{{ unused_disks }}"
-  loop_control:
-    index_var: index
-
-- name: get data volumes
-  ansible.builtin.shell:
-    cmd: >
-      lsblk --list --noheadings --output MOUNTPOINT
-      | grep -i {{ crdb_folder }}
-  register: mounted_data_disks
-
-- name: set data disk variable
-  ansible.builtin.set_fact:
-    crdb_data_disks: "{{ mounted_data_disks.stdout }}"
-
-- name: list mounted data disks
-  ansible.builtin.debug:
-    var: "{{ crdb_data_disks }}"
+  loop: "{{ disks | zip(mount_paths) | list }}"
