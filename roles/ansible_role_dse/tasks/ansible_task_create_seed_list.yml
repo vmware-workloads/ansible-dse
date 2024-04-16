@@ -10,6 +10,20 @@
   ansible.builtin.debug:
     var: dse_dc_groups
 
+- name: Set all nodes to seed 'false'
+  ansible.builtin.set_fact:
+    seed: false
+
+- name: Set the first node in each dc group to seed 'true'
+  ansible.builtin.set_fact:
+    seed: true
+  when: inventory_inventory_hostname == item
+  loop: dse_dc_groups
+
+- debug:
+    var: hostvars
+
+
 #- name: Template seed list
 #  ansible.builtin.template:
 #    src: seeds.j2
