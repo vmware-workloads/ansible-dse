@@ -17,8 +17,8 @@
 - name: Set the first node in each dc group to seed 'true'
   ansible.builtin.set_fact:
     seed: true
-  when: inventory_inventory_hostname == item
-  loop: dse_dc_groups
+  when: inventory_hostname == groups[item][0]
+  loop: "{{ dse_dc_groups }}"
 
 - debug:
     var: hostvars
