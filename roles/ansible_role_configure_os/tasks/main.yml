@@ -16,5 +16,5 @@
 - name: configure debian
   ansible.builtin.debug:
     msg: "use_hosts_file: {{ use_hosts_file }}"
-  when: ansible_distribution == "Debian' or ansible_distribution == "Ubuntu"
+  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
 
