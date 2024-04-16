@@ -51,8 +51,9 @@
 
 - name: Check the required number of disks on the host
   ansible.builtin.assert:
-    - 'sdb' in all_disks.stdout_lines
-    - 'sdc' in all_disks.stdout_lines
+    that:
+      - 'sdb' in all_disks.stdout_lines
+      - 'sdc' in all_disks.stdout_lines
 
 - name: Create xfs filesystem
   filesystem:
