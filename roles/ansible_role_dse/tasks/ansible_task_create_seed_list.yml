@@ -1,0 +1,26 @@
+- name: create search pattern
+  ansible.builtin.set_fact:
+    dc_pattern: '^dse_dc\d+$'
+
+- name: "Find list of datacenter groups that match '{{ dc_pattern }}'"
+  ansible.builtin.set_fact:
+    dse_dc_groups: "{{ groups | select('match', dc_pattern) | list }}"
+
+- name: Print groups
+  ansible.builtin.debug:
+    var: dse_dc_groups
+
+#- name: Template seed list
+#  ansible.builtin.template:
+#    src: seeds.j2
+#    dest: /tmp/seed_list
+#    mode: "0664"
+#
+#- name: Load seed list
+#  ansible.builtin.shell:
+#    cmd: cat /tmp/seed_list
+#  register: seed_list
+#
+#- name: Set seeds fact
+#  ansible.builtin.set_fact:
+#    seeds: "{{ seed_list.stdout }}"

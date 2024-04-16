@@ -1,8 +1,8 @@
-- name: print distribution
+- name: Print distribution
   ansible.builtin.debug:
     msg: "{{ ansible_distribution }} - {{ ansible_distribution_version }}"
 
-- name: look for the most specific os vars
+- name: Look for the most specific OS vars
   include_vars: "{{ item }}"
   loop: "{{ query('first_found', { 'files': files, 'paths': paths }) }}"
   vars:
@@ -13,7 +13,7 @@
     paths:
       - vars
 
-- name: configure debian
+- name: Configure debian
   ansible.builtin.include_tasks: ansible_task_configure_debian.yml
   when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
 

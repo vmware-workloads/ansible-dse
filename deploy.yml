@@ -21,7 +21,7 @@
       retries: 50
       delay: 5
 
-- name: OS updates
+- name: Configure systems
   hosts: dse
   any_errors_fatal: true
   become: true
@@ -41,9 +41,7 @@
   become: true
   become_method: sudo
   roles:
-    - ansible_role_dse_common
-    - ansible_role_install_binaries
-    - ansible_role_update_configuration
+    - ansible_role_dse
 #
 ## Configure JVM options
 #- hosts: dse

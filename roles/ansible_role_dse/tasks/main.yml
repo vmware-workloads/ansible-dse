@@ -1,0 +1,5 @@
+- name: Create seed list
+  ansible.builtin.include_tasks: ansible_role_mount_disks.yml
+
+#- name: Mount disks
+#  ansible.builtin.include_tasks: ansible_role_mount_disks.yml
