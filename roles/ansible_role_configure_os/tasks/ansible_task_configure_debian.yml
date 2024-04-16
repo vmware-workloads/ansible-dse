@@ -4,15 +4,15 @@
 
 - name: Install Java 8
   ansible.builtin.apt:
-    name: "{{ openjdk-package }}"
+    name: "{{ openjdk_package }}"
     state: present
 
 - name: Install libaio
   ansible.builtin.apt:
-    name: "{{ libaio-package }}"
+    name: "{{ libaio_package }}"
     state: present
 
 - name: Install python
   ansible.builtin.apt:
-    name: "{{ python-package }}"
+    name: "{{ python_package }}"
     state: present
