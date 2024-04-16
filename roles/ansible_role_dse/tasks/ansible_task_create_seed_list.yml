@@ -20,21 +20,21 @@
   when: inventory_hostname == groups[item][0]
   loop: "{{ dse_dc_groups }}"
 
-- debug:
-    var: hostvars
+- name: Template seed list
+  ansible.builtin.template:
+    src: seeds.j2
+    dest: /tmp/seed_list
+    mode: "0664"
 
+- name: Load seed list
+  ansible.builtin.shell:
+    cmd: cat /tmp/seed_list
+  register: seed_list
 
-#- name: Template seed list
-#  ansible.builtin.template:
-#    src: seeds.j2
-#    dest: /tmp/seed_list
-#    mode: "0664"
-#
-#- name: Load seed list
-#  ansible.builtin.shell:
-#    cmd: cat /tmp/seed_list
-#  register: seed_list
-#
-#- name: Set seeds fact
-#  ansible.builtin.set_fact:
-#    seeds: "{{ seed_list.stdout }}"
+- name: Set seeds fact
+  ansible.builtin.set_fact:
+    seeds: "{{ seed_list.stdout }}"
+
+- name: Print seeds
+  ansible.builtin.debug:
+    var: seeds
