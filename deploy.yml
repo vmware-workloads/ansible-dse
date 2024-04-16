@@ -21,129 +21,85 @@
       retries: 50
       delay: 5
 
-
-# Get the current timestamp and register datastax debian packages
-- hosts: dse
+- name: OS updates
+  hosts: dse
   any_errors_fatal: true
   become: true
-  become_method: sudo
-  tasks:
-  - name: Get the current timestamp
-    shell: 'date +%Y%m%d%H%M%S'
-    register: current_timestamp
-
-  - name: Update apt packages
-    ansible.builtin.apt:
-      update_cache: yes
-
-  - name: Install Java 8
-    ansible.builtin.apt:
-      name: openjdk-8-jre
-      state: present
-
-  - name: Install libaio
-    ansible.builtin.apt:
-      name: libaio1
-      state: present
-
-  - name: Install python 
-    ansible.builtin.apt:
-      name: python
-      state: present
-
-  - name: Create xfs filesytems on sdb
-    filesystem:
-      fstype: xfs
-      dev: /dev/sdb
-
-  - name: Create xfs filesytems on sdc
-    filesystem:
-      fstype: xfs
-      dev: /dev/sdc
-
-  - name: Mount sdb to dse_data dir
-    ansible.posix.mount:
-      path: /opt/dse_data
-      src: /dev/sdb
-      fstype: xfs
-      state: mounted
-
-  - name: Mount sdc to cassandra log dir
-    ansible.posix.mount:
-      path: /var/log/cassandra
-      src: /dev/sdc
-      fstype: xfs
-      state: mounted
-
-
+  gather_facts: true
+  gather_subset:
+    - "distribution"
+    - "distribution_release"
+    - "distribution_major_version"
+    - "distribution_version"
+    - "os_family"
   roles:
-  - { role: datastax_pkg }
+    - ansible_role_configure_os
 
-
-# Install and configure DSE
-- hosts: dse
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  roles:
-    - { role: dse_common }
-    - { role: dse_instbin }
-    - { role: dse_updcfg }
-
-# Configure JVM options
-- hosts: dse
-  any_errors_fatal: true
-  become: true
-  become_method: sudo
-  tasks:
-    - name: remove last line
-      lineinfile:
-          path: /etc/dse/cassandra/jvm-server.options
-          regexp: "# The newline in the end of file is intentional" 
-          state: absent
-    - name: Add JVM options
-      lineinfile:
-        path: /etc/dse/cassandra/jvm-server.options
-        line: "{{ item }}"
-      with_items:
-      - '# Additional JVM options from des-automation tool'
-      - '-XX:+UseG1GC'
-      - '-XX:G1RSetUpdatingPauseTimePercent=5'
-      - '-XX:MaxGCPauseMillis=300'
-      - '-XX:InitiatingHeapOccupancyPercent=70 -Xms31G -Xmx31G'
-    - name: Add new line and comments
-      shell: printf '\n# The newline in the end of file is intentional' >> /etc/dse/cassandra/jvm-server.options
-
-# Start DSE seed nodes 
-- hosts: dse
-  any_errors_fatal: true
-  name: Start seed node first one by one
-  serial: 1
-  become: true
-  become_method: sudo
-  vars:
-    srvc_name: dse
-  roles:
-    - { role: start_srvc, when: seed == 'true' } 
-
-# Start DSE non-seed nodes 
-- hosts: dse
-  any_errors_fatal: true
-  name: Start non-seed node first one by one
-  serial: 1
-  become: true
-  become_method: sudo
-  vars:
-    srvc_name: dse
-  roles:
-    - { role: start_srvc, when: seed == 'false' }
-
-
-# Check DSE version and C* version
-- hosts: dse
-  tasks:
-  - name: Check DSE version
-    command: "dse -v"
-    register: _dse_ver
-  - debug:
-     msg: "DSE Version: {{ _dse_ver.stdout }}"
+#
+## Install and configure DSE
+#- hosts: dse
+#  any_errors_fatal: true
+#  become: true
+#  become_method: sudo
+#  roles:
+#    - { role: dse_common }
+#    - { role: dse_instbin }
+#    - { role: dse_updcfg }
+#
+## Configure JVM options
+#- hosts: dse
+#  any_errors_fatal: true
+#  become: true
+#  become_method: sudo
+#  tasks:
+#    - name: remove last line
+#      lineinfile:
+#          path: /etc/dse/cassandra/jvm-server.options
+#          regexp: "# The newline in the end of file is intentional"
+#          state: absent
+#    - name: Add JVM options
+#      lineinfile:
+#        path: /etc/dse/cassandra/jvm-server.options
+#        line: "{{ item }}"
+#      with_items:
+#      - '# Additional JVM options from des-automation tool'
+#      - '-XX:+UseG1GC'
+#      - '-XX:G1RSetUpdatingPauseTimePercent=5'
+#      - '-XX:MaxGCPauseMillis=300'
+#      - '-XX:InitiatingHeapOccupancyPercent=70 -Xms31G -Xmx31G'
+#    - name: Add new line and comments
+#      shell: printf '\n# The newline in the end of file is intentional' >> /etc/dse/cassandra/jvm-server.options
+#
+## Start DSE seed nodes
+#- hosts: dse
+#  any_errors_fatal: true
+#  name: Start seed node first one by one
+#  serial: 1
+#  become: true
+#  become_method: sudo
+#  vars:
+#    srvc_name: dse
+#  roles:
+#    - { role: start_srvc, when: seed == 'true' }
+#
+## Start DSE non-seed nodes
+#- hosts: dse
+#  any_errors_fatal: true
+#  name: Start non-seed node first one by one
+#  serial: 1
+#  become: true
+#  become_method: sudo
+#  vars:
+#    srvc_name: dse
+#  roles:
+#    - { role: start_srvc, when: seed == 'false' }
+#
+#
+## Check DSE version and C* version
+#- hosts: dse
+#  tasks:
+#  - name: Check DSE version
+#    command: "dse -v"
+#    register: _dse_ver
+#  - debug:
+#     msg: "DSE Version: {{ _dse_ver.stdout }}"

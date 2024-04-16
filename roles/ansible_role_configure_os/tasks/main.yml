@@ -1,0 +1,20 @@
+- name: print distribution
+  ansible.builtin.debug:
+    msg: "{{ ansible_distribution }} - {{ ansible_distribution_version }}"
+
+- name: look for the most specific os vars
+  include_vars: "{{ item }}"
+  loop: "{{ query('first_found', { 'files': myfiles, 'paths': mypaths }) }}"
+  vars:
+    myfiles:
+      - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+      - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+      - "{{ ansible_distribution }}.yml"
+    paths:
+      - vars
+
+- name: configure debian
+  ansible.builtin.debug:
+    msg: "use_hosts_file: {{ use_hosts_file }}"
+  when: ansible_distribution == "Debian' or ansible_distribution == "Ubuntu"
+

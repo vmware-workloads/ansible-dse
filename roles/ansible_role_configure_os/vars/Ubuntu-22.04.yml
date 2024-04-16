@@ -1,0 +1,4 @@
+# APT packages
+libaio-package: libaio1
+openjdk-package: openjdk-8-jre
+python-package: python3
