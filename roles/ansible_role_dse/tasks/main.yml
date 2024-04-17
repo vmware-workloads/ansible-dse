@@ -1,7 +1,7 @@
 - name: Set DSE version
   ansible.builtin.set_fact:
-    ver_major: "{{ dse_ver_major | default(default_dse_ver_major)"
-    ver_minor: "{{ dse_ver_minor | default(default_dse_ver_minor)"
+    ver_major: "{{ dse_ver_major | default(default_dse_ver_major) }}"
+    ver_minor: "{{ dse_ver_minor | default(default_dse_ver_minor) }}"
 
 - name: Print DSE version
   ansible.builtin.debug:
