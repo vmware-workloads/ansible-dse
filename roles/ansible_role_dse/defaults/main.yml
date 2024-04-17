@@ -3,7 +3,7 @@ default_dse_ver_major: 6.8
 default_dse_ver_minor: 44
 
 # Cluster configuration
-default_cluster_name: "testcluster"
+default_dse_cluster_name: testcluster
 
 # Data dirs
 default_dse_config_dir: /etc/dse

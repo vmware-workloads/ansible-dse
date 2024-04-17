@@ -2,6 +2,7 @@
   ansible.builtin.set_fact:
     ver_major: "{{ dse_ver_major | default(default_dse_ver_major) }}"
     ver_minor: "{{ dse_ver_minor | default(default_dse_ver_minor) }}"
+    cluster_name: "{{ dse_cluster_name | default(default_dse_cluster_name) }}"
 
 - name: Print DSE version
   ansible.builtin.debug:
