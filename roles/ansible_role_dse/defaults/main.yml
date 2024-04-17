@@ -1,6 +1,6 @@
 # Version
 default_dse_ver_major: "6.8"
-default_dse_ver_minor: "15"
+default_dse_ver_minor: "44"
 
 # Cluster configuration
 default_cluster_name: "testcluster"
