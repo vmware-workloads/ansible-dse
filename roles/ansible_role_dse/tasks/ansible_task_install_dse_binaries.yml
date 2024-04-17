@@ -9,19 +9,38 @@
     url: "https://debian.datastax.com/debian/repo_key"
     state: present
 
+
 - name: "Install DSE version {{ dse_ver_target }}"
   ansible.builtin.apt:
+    pkg:
+      - "dse-libcassandra={{ dse_ver_target }}-1"
+      - "dse-libgraph={{ dse_ver_target }}-1"
+      - "dse-libhadoop2-client={{ dse_ver_target }}-1"
+      - "dse-libhadoop2-client-native={{ dse_ver_target }}-1"
+      - "dse-liblog4j={{ dse_ver_target }}-1"
+      - "dse-libtomcat={{ dse_ver_target }}-1"
+      - "dse-libsolr={{ dse_ver_target }}-1"
+      - "dse-libspark={{ dse_ver_target }}-1"
+      - "dse={{ dse_ver_target }}-1"
+      - "dse-full={{ dse_ver_target }}-1"
     name: "{{ item }}"
     state: present
     update_cache: yes
-  with_items:
-    - "dse-libcassandra={{ dse_ver_target }}-1"
-    - "dse-libgraph={{ dse_ver_target }}-1"
-    - "dse-libhadoop2-client={{ dse_ver_target }}-1"
-    - "dse-libhadoop2-client-native={{ dse_ver_target }}-1"
-    - "dse-liblog4j={{ dse_ver_target }}-1"
-    - "dse-libtomcat={{ dse_ver_target }}-1"
-    - "dse-libsolr={{ dse_ver_target }}-1"
-    - "dse-libspark={{ dse_ver_target }}-1"
-    - "dse={{ dse_ver_target }}-1"
-    - "dse-full={{ dse_ver_target }}-1"
+
+#- name: "Install DSE version {{ dse_ver_target }}"
+#  ansible.builtin.apt:
+#    name: "{{ item }}"
+#    state: present
+#    update_cache: yes
+#  with_items:
+#    - "dse-libcassandra={{ dse_ver_target }}-1"
+#    - "dse-libgraph={{ dse_ver_target }}-1"
+#    - "dse-libhadoop2-client={{ dse_ver_target }}-1"
+#    - "dse-libhadoop2-client-native={{ dse_ver_target }}-1"
+#    - "dse-liblog4j={{ dse_ver_target }}-1"
+#    - "dse-libtomcat={{ dse_ver_target }}-1"
+#    - "dse-libsolr={{ dse_ver_target }}-1"
+#    - "dse-libspark={{ dse_ver_target }}-1"
+#    - "dse={{ dse_ver_target }}-1"
+#    - "dse-full={{ dse_ver_target }}-1"
+#pkg:
