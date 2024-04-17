@@ -74,7 +74,7 @@
     - "{{ saved_caches_directory }}"
 
 - name: Create Cassandra directory for hints and cdc_raw (only applicable to DSE 5.0+)
-  when: dse_ver_major is version_compare('5.0', '>=')
+  when: ver_major is version_compare('5.0', '>=')
   file:
     path: "{{ item }}"
     state: directory
@@ -86,7 +86,7 @@
     - "{{ cdc_raw_directory }}"
 
 - name: Create Cassandra directory for metadata (only applicable to DSE 6.8+)
-  when: dse_ver_major is version_compare('6.8', '>=')
+  when: ver_major is version_compare('6.8', '>=')
   file:
     path: "{{ item }}"
     state: directory
@@ -97,7 +97,7 @@
     - "{{ metadata_directory }}"
 
 - name: Configure DSE cluster name, seeds list, endpoint_snitch, listen_address, commitlog_directory, saved_caches_directory, hints_directory, cdc_raw_directory (cassandra.yaml)
-  when: dse_ver_major is version_compare('5.0', '>=')
+  when: ver_major is version_compare('5.0', '>=')
   lineinfile:
     name: "{{ config_dir }}/cassandra/cassandra.yaml"
     regexp: "{{ item.regexp }}"
@@ -117,7 +117,7 @@
     - { regexp: 'allocate_tokens_for_local_replication_factor\:', line: 'allocate_tokens_for_local_replication_factor: 3' }
 
 - name: Configure DSE rpc_address and broadcast_rpc_address (only applicable to 5.0 and 5.1)
-  when: dse_ver_major is version_compare('5.0', '>=') and dse_ver_major is version_compare('6.0', '<')
+  when: ver_major is version_compare('5.0', '>=') and ver_major is version_compare('6.0', '<')
   lineinfile:
     name: "{{ config_dir }}/cassandra/cassandra.yaml"
     regexp: "{{ item.regexp }}"
@@ -131,7 +131,7 @@
 #    - { regexp: '#*\s*broadcast_rpc_address\:', line: "broadcast_rpc_address: {{ ansible_default_ipv4.address }}" }
 
 - name: Configure DSE native_transport_address and native_transport_broadcast_address (only applicable to 6.0+)
-  when: dse_ver_major is version_compare('6.0', '>=')
+  when: ver_major is version_compare('6.0', '>=')
   lineinfile:
     name: "{{ config_dir }}/cassandra/cassandra.yaml"
     regexp: "{{ item.regexp }}"
@@ -145,7 +145,7 @@
 #    - { regexp: '#*\s*native_transport_broadcast_address\:', line: "native_transport_broadcast_address: {{ ansible_default_ipv4.address }}" }
 
 - name: Configure DSE metadata_directory (cassandra.yaml), DSE 6.8+ only
-  when: dse_ver_major is version_compare('6.8', '>=')
+  when: ver_major is version_compare('6.8', '>=')
   lineinfile:
     name: "{{ config_dir }}/cassandra/cassandra.yaml"
     regexp: "{{ item.regexp }}"
