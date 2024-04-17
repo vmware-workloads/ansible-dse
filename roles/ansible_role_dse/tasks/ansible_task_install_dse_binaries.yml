@@ -10,7 +10,7 @@
     state: present
 
 - name: "Install DSE version {{ dse_ver_target }}"
-  when: dse_ver_major is version('5.1', '>=')
+  when: dse_ver_target is version('5.1', '>=')
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
