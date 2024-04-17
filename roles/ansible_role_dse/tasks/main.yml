@@ -25,3 +25,6 @@
 
 - name: Install DataStax binaries
   ansible.builtin.include_tasks: ansible_task_install_dse_binaries.yml
+
+- name: Update DataStax configuration
+  ansible.builtin.include_tasks: ansible_task_update_configuration.yml
