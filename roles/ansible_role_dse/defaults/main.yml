@@ -6,7 +6,7 @@ default_dse_ver_minor: 44
 default_cluster_name: "testcluster"
 
 # Data dirs
-default_dse_config_dir: /etc/dse/
+default_dse_config_dir: /etc/dse
 default_dse_default_dir: /etc/default
 default_dse_backup_dir: /var/lib/dse
 
