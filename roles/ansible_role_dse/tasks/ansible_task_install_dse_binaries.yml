@@ -9,7 +9,7 @@
     url: "https://debian.datastax.com/debian/repo_key"
     state: present
 
-- name: "Install DSE version {{ dse_ver_target }}
+- name: "Install DSE version {{ dse_ver_target }}"
   when: dse_ver_major is version('5.1', '>=')
   ansible.builtin.apt:
     name: "{{ item }}"
