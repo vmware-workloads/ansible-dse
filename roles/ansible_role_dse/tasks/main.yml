@@ -1,5 +1,5 @@
 - name: Set variables
-  ansible.builin.set_fact:
+  ansible.builtin.set_fact:
     dse_ver_target: "{{ dse_ver_major }}.{{ dse_ver_minor }}"
     data_file_directories: "{{ dse_data_homedir | default(default_dse_data_homedir) }}/cassandra"
     commitlog_directory: "{{ dse_data_homedir | default(default_dse_data_homedir) }}/commitlog"
