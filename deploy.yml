@@ -32,8 +32,14 @@
     - "distribution_major_version"
     - "distribution_version"
     - "os_family"
+  vars:
+    #dse_ver_major: "6.8"
+    #dse_ver_minor: "44"
+    #dse_syslog_dir: /var/log/cassandra
+    #dse_data_homedir: /opt/dse_data
   roles:
     - ansible_role_configure_os
+
 
 - name: Install and configure DSE
   hosts: dse
