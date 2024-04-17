@@ -23,7 +23,6 @@
       - "dse-libspark={{ dse_ver_target }}-1"
       - "dse={{ dse_ver_target }}-1"
       - "dse-full={{ dse_ver_target }}-1"
-    name: "{{ item }}"
     state: present
     update_cache: yes
 
