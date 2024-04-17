@@ -174,5 +174,5 @@
     group: cassandra
     mode: 0644
   with_items:
-    - { regexp: 'dc\=', line: 'dc={{ dc }}' }
-    - { regexp: 'rack\=', line: 'rack={{ rack }}' }
+    - { regexp: 'dc\=', line: 'dc={{ dse_dc | default(default_dse_dc) }}' }
+    - { regexp: 'rack\=', line: 'rack={{ dse_rack | default(default_dse_rack) }}' }

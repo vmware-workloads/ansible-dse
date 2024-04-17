@@ -16,6 +16,8 @@ default_dse_syslog_dir: /var/log/cassandra
 default_dse_data_homedir: /opt/dse_data
 
 default_dse_vnode_token_num: 8
+default_dse_dc: DC1
+default_dse_rack: RAC1
 
 default_dse_spark_enabled: true
 default_dse_solr_enabled: true
