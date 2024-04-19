@@ -1,18 +1,9 @@
-- name: Update apt packages
+- name: Install Java 8, libaio, and python
   ansible.builtin.apt:
+    name:
+      - "{{ openjdk_package }}"
+      - "{{ libaio_package }}"
+      - "{{ python_package }}"
+    state: present
     update_cache: yes
-
-- name: Install Java 8
-  ansible.builtin.apt:
-    name: "{{ openjdk_package }}"
-    state: present
-
-- name: Install libaio
-  ansible.builtin.apt:
-    name: "{{ libaio_package }}"
-    state: present
-
-- name: Install python
-  ansible.builtin.apt:
-    name: "{{ python_package }}"
-    state: present
+    lock_timeout: 120
