@@ -23,3 +23,6 @@ default_dse_spark_enabled: true
 default_dse_solr_enabled: true
 default_dse_graph_enabled: true
 default_dse_auto_bootstrap: true
+
+# Ports
+dse_database_native_port: 9042

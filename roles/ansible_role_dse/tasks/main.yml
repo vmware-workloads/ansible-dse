@@ -1,3 +1,18 @@
+- name: Print distribution
+  ansible.builtin.debug:
+    msg: "{{ ansible_distribution }} - {{ ansible_distribution_version }}"
+
+- name: Look for the most specific OS vars
+  include_vars: "{{ item }}"
+  loop: "{{ query('first_found', { 'files': files, 'paths': paths }) }}"
+  vars:
+    files:
+      - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+      - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+      - "{{ ansible_distribution }}.yml"
+    paths:
+      - vars
+
 - name: Set DSE version
   ansible.builtin.set_fact:
     ver_major: "{{ dse_ver_major | default(default_dse_ver_major) }}"
@@ -29,3 +44,8 @@
 
 - name: Update DataStax configuration
   ansible.builtin.include_tasks: ansible_task_update_configuration.yml
+
+- name: Start DataStax seed nodes
+  ansible.builtin.include_tasks: ansible_task_start_seed_nodes.yml
+  throttle: 1
+  when: seed | bool

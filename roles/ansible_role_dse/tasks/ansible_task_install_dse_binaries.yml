@@ -2,13 +2,11 @@
   ansible.builtin.apt_repository:
     repo: deb https://debian.datastax.com/enterprise stable main
     state: present
-    filename: google-chrome
 
 - name: Add the DataStax repository key
   ansible.builtin.apt_key:
     url: "https://debian.datastax.com/debian/repo_key"
     state: present
-
 
 - name: "Install DSE version {{ dse_ver_target }}"
   ansible.builtin.apt:
