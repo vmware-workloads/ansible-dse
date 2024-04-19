@@ -1,9 +1,0 @@
-# all file
-#cluster_name: testcluster
-#vnode_token_num: 8
-
-# data dirs, change or just leave as default
-#dse_config_dir: /etc/dse/
-#dse_default_dir: /etc/default
-#dse_syslog_dir: /var/log/cassandra
-#dse_data_homedir: /opt/dse_data
