@@ -1,0 +1,12 @@
+- name: Start DSE seed nodes
+  ansible.builtin.service:
+    name: "{{ dse_service_name }}"
+    state: restarted
+    enabled: true
+
+- name: Wait for Cassandra process is up and running
+  ansible.builtin.wait_for:
+    host: "{{ ansible_default_ipv4.address }}"
+    port: "{{ dse_database_native_port }}"
+    delay: 10
+    state: started
