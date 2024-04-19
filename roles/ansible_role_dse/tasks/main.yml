@@ -47,5 +47,4 @@
 
 - name: Start DataStax seed nodes
   ansible.builtin.include_tasks: ansible_task_start_seed_nodes.yml
-  throttle: 1
   when: seed | bool
