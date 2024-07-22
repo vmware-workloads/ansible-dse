@@ -46,13 +46,11 @@
   ansible.builtin.include_tasks: ansible_task_update_configuration.yml
 
 - name: Start DataStax seed nodes
-  throttle: 1
-  block:
-    - include_tasks: ansible_task_start_seed_nodes.yml
+  ansible.builtin.include_tasks: ansible_task_start_seed_nodes.yml
   when: seed | bool
+  with_items: "{{ ansible_play_batch }}"
 
 - name: Start DataStax others nodes
-  throttle: 1
-  block:
-    - include_tasks: ansible_task_start_other_nodes.yml
+  ansible.builtin.include_tasks: ansible_task_start_other_nodes.yml
   when: not (seed | bool)
+  with_items: "{{ ansible_play_batch }}"
