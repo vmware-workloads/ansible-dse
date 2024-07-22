@@ -1,4 +1,4 @@
-- name: Start DSE seed nodes
+- name: Start DSE other nodes
   ansible.builtin.service:
     name: "{{ dse_service_name }}"
     state: restarted

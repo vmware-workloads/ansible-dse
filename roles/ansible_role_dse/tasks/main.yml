@@ -47,10 +47,12 @@
 
 - name: Start DataStax seed nodes
   ansible.builtin.include_tasks: ansible_task_start_seed_nodes.yml
-  when: seed | bool
+  when: seed | bool and 
+        inventory_hostname == item
   with_items: "{{ ansible_play_batch }}"
 
 - name: Start DataStax others nodes
   ansible.builtin.include_tasks: ansible_task_start_other_nodes.yml
-  when: not (seed | bool)
+  when: not (seed | bool) and 
+        inventory_hostname == item
   with_items: "{{ ansible_play_batch }}"
