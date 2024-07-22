@@ -37,15 +37,15 @@
   set_fact:
     unused_disks: "{{ all_disks.stdout_lines | difference(mounted_disks.stdout_lines) }}"
 
-- name: debug
+- name: Print mounted disks
   ansible.builtin.debug:
     var: mounted_disks.stdout_lines
 
-- name: debug
+- name: Print all disks
   ansible.builtin.debug:
     var: all_disks.stdout_lines
 
-- name: debug
+- name: Print unused disks
   ansible.builtin.debug:
     var: unused_disks
 
