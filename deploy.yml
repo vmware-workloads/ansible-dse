@@ -21,9 +21,6 @@
       retries: 50
       delay: 5
 
-    - name: Wait for /var/lib/dpkg/lock-frontend to be released
-      ansible.builtin.shell: while lsof /var/lib/dpkg/lock-frontend ; do sleep 10; done;
-
 - name: Configure systems
   hosts: dse
   any_errors_fatal: true

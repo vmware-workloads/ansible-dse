@@ -8,9 +8,6 @@
     repo: deb https://debian.datastax.com/enterprise stable main
     state: present
 
-
-
-
 - name: "Install DSE version {{ dse_ver_target }}"
   ansible.builtin.apt:
     pkg:
