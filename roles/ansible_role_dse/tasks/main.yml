@@ -46,7 +46,9 @@
   ansible.builtin.include_tasks: ansible_task_update_configuration.yml
 
 - name: Start DataStax seed nodes
-  ansible.builtin.include_tasks: ansible_task_start_seed_nodes.yml
+  throttle: 1
+  block:
+    - include_tasks: ansible_task_start_seed_nodes.yml
   when: seed | bool
 
 - name: Start DataStax others nodes
