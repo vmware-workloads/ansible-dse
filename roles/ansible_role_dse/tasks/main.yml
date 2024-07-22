@@ -51,6 +51,6 @@
 
 - name: Start DataStax others nodes
   throttle: 1
-  ansible.builtin.block:
+  block:
     - include_tasks: ansible_task_start_other_nodes.yml
   when: not (seed | bool)
