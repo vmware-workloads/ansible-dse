@@ -6,7 +6,6 @@ This is an Ansible Automation Platform playbook to deploy DataStax Enterprise 6.
 This playbook was created for demonstration purposes and should serve as a basis to create a more comprehensive playbook. 
 
 
-
 ## Playbook Structure
 
 ```
