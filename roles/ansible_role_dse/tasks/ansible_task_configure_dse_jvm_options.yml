@@ -10,10 +10,10 @@
     path: /etc/dse/cassandra/jvm-server.options
     line: "{{ item }}"
   with_items:
-    - '# Additional JVM options from des-automation tool'
+    - '# Additional JVM options from dse-automation tool'
     - '-XX:+UseG1GC'
     - '-XX:G1RSetUpdatingPauseTimePercent=5'
     - '-XX:MaxGCPauseMillis=300'
     - '-XX:InitiatingHeapOccupancyPercent=70 -Xms31G -Xmx31G'
+    - ''
     - '# The newline in the end of file is intentional'
-    - '\n# ADDED BY ANSIBLE: The newline in the end of file is intentional'
