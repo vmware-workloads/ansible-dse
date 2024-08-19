@@ -8,12 +8,12 @@
 - name: Add JVM options
   ansible.builtin.lineinfile:
     path: /etc/dse/cassandra/jvm-server.options
-    line: "{{ item }}"
-  with_items:
-    - '# Additional JVM options added by the ansible-dse playbook'
-    - '-XX:+UseG1GC'
-    - '-XX:G1RSetUpdatingPauseTimePercent=5'
-    - '-XX:MaxGCPauseMillis=300'
-    - '-XX:InitiatingHeapOccupancyPercent=70 -Xms31G -Xmx31G'
-    - '\n'
-    - '# The newline in the end of file is intentional'
+    insertafter: EOF
+    line: |
+      # Additional JVM options added by the ansible-dse playbook
+      -XX:+UseG1GC
+      -XX:G1RSetUpdatingPauseTimePercent=5
+      -XX:MaxGCPauseMillis=300
+      -XX:InitiatingHeapOccupancyPercent=70 -Xms31G -Xmx31G
+      
+      # The newline in the end of file is intentional
