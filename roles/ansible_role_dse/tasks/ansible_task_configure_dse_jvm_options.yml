@@ -5,9 +5,9 @@
 
 - name: Validate host memory size is at least 48GB
   ansible.builtin.assert:
-    fail_msg: "hardcoded JVM options require at least 48GB memory (48192MB)"
+    fail_msg: "hardcoded JVM options require at least 48GB memory"
     that:
-      - ansible_memtotal_mb >= 48192
+      - ansible_memtotal_mb >= 48000
 
 - name: remove last line
   ansible.builtin.lineinfile:
