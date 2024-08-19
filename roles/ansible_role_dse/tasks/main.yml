@@ -45,6 +45,9 @@
 - name: Update DataStax configuration
   ansible.builtin.include_tasks: ansible_task_update_configuration.yml
 
+- name: Update DataStax JVM configuration
+  ansible.builtin.include_tasks: ansible_task_configure_dse_jvm_options.yml
+
 - name: Start DataStax seed nodes
   ansible.builtin.include_tasks: ansible_task_start_seed_nodes.yml
   when: seed | bool and 

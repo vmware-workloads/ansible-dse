@@ -49,61 +49,13 @@
     #dse_data_homedir: /opt/dse_data
   roles:
     - ansible_role_dse
-#
-## Configure JVM options
-#- hosts: dse
-#  any_errors_fatal: true
-#  become: true
-#  become_method: sudo
-#  tasks:
-#    - name: remove last line
-#      lineinfile:
-#          path: /etc/dse/cassandra/jvm-server.options
-#          regexp: "# The newline in the end of file is intentional"
-#          state: absent
-#    - name: Add JVM options
-#      lineinfile:
-#        path: /etc/dse/cassandra/jvm-server.options
-#        line: "{{ item }}"
-#      with_items:
-#      - '# Additional JVM options from des-automation tool'
-#      - '-XX:+UseG1GC'
-#      - '-XX:G1RSetUpdatingPauseTimePercent=5'
-#      - '-XX:MaxGCPauseMillis=300'
-#      - '-XX:InitiatingHeapOccupancyPercent=70 -Xms31G -Xmx31G'
-#    - name: Add new line and comments
-#      shell: printf '\n# The newline in the end of file is intentional' >> /etc/dse/cassandra/jvm-server.options
-#
-## Start DSE seed nodes
-#- hosts: dse
-#  any_errors_fatal: true
-#  name: Start seed node first one by one
-#  serial: 1
-#  become: true
-#  become_method: sudo
-#  vars:
-#    srvc_name: dse
-#  roles:
-#    - { role: start_srvc, when: seed == 'true' }
-#
-## Start DSE non-seed nodes
-#- hosts: dse
-#  any_errors_fatal: true
-#  name: Start non-seed node first one by one
-#  serial: 1
-#  become: true
-#  become_method: sudo
-#  vars:
-#    srvc_name: dse
-#  roles:
-#    - { role: start_srvc, when: seed == 'false' }
-#
-#
+
 ## Check DSE version and C* version
-#- hosts: dse
-#  tasks:
-#  - name: Check DSE version
-#    command: "dse -v"
-#    register: _dse_ver
-#  - debug:
-#     msg: "DSE Version: {{ _dse_ver.stdout }}"
+- hosts: dse
+  tasks:
+  - name: Check DSE version
+    ansible.builtin.command:
+      cmd: dse -v
+    register: _dse_ver
+  - debug:
+     msg: "DSE Version: {{ _dse_ver.stdout }}"

@@ -1,0 +1,19 @@
+## Configure JVM options
+- name: remove last line
+  ansible.builtin.lineinfile:
+    path: /etc/dse/cassandra/jvm-server.options
+    regexp: "# The newline in the end of file is intentional"
+    state: absent
+
+- name: Add JVM options
+  ansible.builtin.lineinfile:
+    path: /etc/dse/cassandra/jvm-server.options
+    line: "{{ item }}"
+  with_items:
+    - '# Additional JVM options from des-automation tool'
+    - '-XX:+UseG1GC'
+    - '-XX:G1RSetUpdatingPauseTimePercent=5'
+    - '-XX:MaxGCPauseMillis=300'
+    - '-XX:InitiatingHeapOccupancyPercent=70 -Xms31G -Xmx31G'
+    - '# The newline in the end of file is intentional'
+    - '\n# ADDED BY ANSIBLE: The newline in the end of file is intentional'
