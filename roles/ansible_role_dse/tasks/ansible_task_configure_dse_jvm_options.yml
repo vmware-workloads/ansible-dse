@@ -10,7 +10,7 @@
     path: /etc/dse/cassandra/jvm-server.options
     line: "{{ item }}"
   with_items:
-    - '# Additional JVM options from dse-automation tool'
+    - '# Additional JVM options added by the ansible-dse playbook'
     - '-XX:+UseG1GC'
     - '-XX:G1RSetUpdatingPauseTimePercent=5'
     - '-XX:MaxGCPauseMillis=300'
