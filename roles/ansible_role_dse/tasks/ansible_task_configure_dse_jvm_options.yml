@@ -1,4 +1,8 @@
 ## Configure JVM options
+- name: Print host memory size
+  ansible.builtin.debug:
+    var: ansible_memtotal_mb
+
 - name: Validate host memory size is at least 48GB
   ansible.builtin.assert:
     fail_msg: "hardcoded JVM options require at least 48GB memory (48192MB)"
