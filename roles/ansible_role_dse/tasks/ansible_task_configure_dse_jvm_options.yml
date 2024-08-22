@@ -19,7 +19,7 @@
 
 - name: Calculate JVM memory in GB
   ansible.builtin.set_fact:
-    jvm_memory_gb: "{{ min(32, (((ansible_memtotal_gb | int) / 2) | round | int)) }}"
+    jvm_memory_gb: "{{ [32, (((ansible_memtotal_gb | int) / 2) | round | int)] | min }}"
 
 - name: Print calculated JVM memory size in GB
   ansible.builtin.debug:
