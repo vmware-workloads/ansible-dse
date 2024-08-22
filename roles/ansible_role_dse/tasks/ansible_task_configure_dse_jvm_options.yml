@@ -15,7 +15,7 @@
   ansible.builtin.assert:
     fail_msg: "hardcoded JVM options require at least 8GB memory"
     that:
-      - ansible_memtotal_gb >= 8
+      - ansible_memtotal_gb | int >= 8
 
 - name: Calculate JVM memory in GB
   ansible.builtin.set_fact:
