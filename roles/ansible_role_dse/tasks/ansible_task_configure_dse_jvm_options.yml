@@ -1,13 +1,29 @@
 ## Configure JVM options
-- name: Print host memory size
+- name: Print host memory size in MB
   ansible.builtin.debug:
     var: ansible_memtotal_mb
 
-- name: Validate host memory size is at least 48GB
+- name: Calculate memory in GB
+  ansible.builtin.set_fact:
+    ansible_memtotal_gb: "{{ (ansible_memtotal_mb / 1024.0) | round(2, 'floor') }}"
+
+- name: Print host memory size in GB
+  ansible.builtin.debug:
+    var: ansible_memtotal_gb
+
+- name: Validate host memory size is at least 8GB
   ansible.builtin.assert:
-    fail_msg: "hardcoded JVM options require at least 48GB memory"
+    fail_msg: "hardcoded JVM options require at least 8GB memory"
     that:
-      - ansible_memtotal_mb >= 48000
+      - ansible_memtotal_gb >= 8
+
+- name: Calculate JVM memory in GB
+  ansible.builtin.set_fact:
+    jvm_memory_gb: "{{ min(32, ((ansible_memtotal_gb / 2) | round | int) }}"
+
+- name: Print calculated JVM memory size in GB
+  ansible.builtin.debug:
+    var: jvm_memory_gb
 
 - name: remove last line
   ansible.builtin.lineinfile:
@@ -24,6 +40,8 @@
       -XX:+UseG1GC
       -XX:G1RSetUpdatingPauseTimePercent=5
       -XX:MaxGCPauseMillis=300
-      -XX:InitiatingHeapOccupancyPercent=70 -Xms31G -Xmx31G
+      -XX:InitiatingHeapOccupancyPercent=70 
+      -Xms{{ jvm_memory_gb }}G 
+      -Xmx{{ jvm_memory_gb }}G
       
       # The newline in the end of file is intentional
