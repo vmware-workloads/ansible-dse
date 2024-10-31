@@ -50,7 +50,7 @@
 
 - name: Start DataStax seed nodes
   ansible.builtin.include_tasks: ansible_task_start_seed_nodes.yml
- when: seed | bool and
+  when: seed | bool and
         inventory_hostname == item
   with_items: "{{ ansible_play_batch }}"
 
