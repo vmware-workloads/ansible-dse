@@ -1,4 +1,3 @@
-name: crdb_dev_auto
 name: DSE-Datastax
 version: 1.0.0
 formatVersion: 2
@@ -70,7 +69,7 @@ inputs:
     default: 1000
 resources:
   Custom_antiaffinity:
-    type: Custom.antiaffinity
+    type: Custom.AntiAffinityCR
     dependsOn:
       - dse_vm
     properties:

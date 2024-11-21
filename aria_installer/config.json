@@ -2,10 +2,10 @@
   "aria_base_url": "",
   "aria_username": "",
   "aria_password": "",
-  "workflow_name": "automated_ptp",
-  "delete_workflow_name": "automated_delete_ptp",
-  "vro_cr_name": "ptp_cr",
-  "vro_cr_type_name": "Custom.auto_ptp",
+  "workflow_name": "AntiAffinity-Add",
+  "delete_workflow_name": "AntiAffinity-Delete",
+  "vro_cr_name": "AntiAffinity_CustomResource",
+  "vro_cr_type_name": "Custom.AntiAffinityCR",
   "project_name": "My Project",
   "skip_certificate_check":  "True"
 }

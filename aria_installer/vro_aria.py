@@ -378,7 +378,7 @@ def createOrUpdateVroBasedCustomResource(projectId, WorkflowId, DeleteWorkflowId
         "name": WorkflowName,
         "projectId": projectId,
         "type":"vro.workflow",
-        "inputParameters": [{"type": "string","name": "vm"}],
+        "inputParameters": [{"type": "object","name": "myVM"}],
         "outputParameters": [{"type": externalType,"name": "output"}],
         "endpointLink": vroID
     }
@@ -712,7 +712,12 @@ print("Found Workflows\n")
 properties = {
   "type": "object",
   "properties": {
-    "vm": {"type": "string","title": "vm"},
+    "ruleName": {"type": "string","title": "Rule name"},
+    "vmStringArray": {
+        "type": "array",
+        "title": "Virtual machines",
+        "items": {"type": "string","title": "Virtual machines"}
+      },
     "output": {
       "type": "object",
       "properties": {
@@ -754,10 +759,10 @@ properties = {
         "overallStatus": { "type": "object", "title": "overallStatus" }
       },
       "computed": True
-    }
+    }        
   },
   "required": []
-}    
+}  
 
 # Set the returned SDK object to be a VM
 externalType="VC:VirtualMachine"
