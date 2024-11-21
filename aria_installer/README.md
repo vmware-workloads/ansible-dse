@@ -2,7 +2,9 @@ AAP vRO Workflow Installer
 ==========================
 
 Installs the given aria blueprint and vro workflows into aria automation.  
-The automation will then be available in Service Broker.   \#\# Prerequisites
+The automation will then be available in Service Broker.   
+
+## Prerequisites
 
 -   AAP installed and running
 
