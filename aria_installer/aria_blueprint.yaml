@@ -1,0 +1,154 @@
+name: crdb_dev_auto
+name: DSE-Datastax
+version: 1.0.0
+formatVersion: 2
+inputs:
+  vmImage:
+    type: string
+    title: VM Image
+    oneOf:
+      - title: Ubuntu Focal (20.04)
+        const: https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.ova
+      - title: Ubuntu Jammy (22.04)
+        const: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova
+      - title: Ubuntu Noble (24.04)
+        const: https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.ova
+    default: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova
+  vmUsername:
+    type: string
+    title: VM Username
+    default: dse
+  vmPassword:
+    type: string
+    title: VM Password
+    default: P@ssword123!
+    encrypted: true
+  dse_host_count:
+    type: integer
+    title: Number of DSE hosts
+    minimum: 4
+    maximum: 16
+    default: 4
+  vmSize:
+    type: string
+    title: DSE VM Size
+    default: dse-16vcpu-48gb
+    enum:
+      - dse-16vcpu-48gb
+      - dse-16vcpu-64gb
+  os_diskSize:
+    type: integer
+    title: OS Disk Size (GB)
+    minimum: 60
+    maximum: 200
+    default: 60
+  diskConfig:
+    default:
+      - name: data0
+        size: 1000
+    type: array
+    title: |
+      Data disks (per VM).
+    minItems: 0
+    maxItems: 5
+    items:
+      type: object
+      properties:
+        size:
+          type: integer
+          title: Size GB
+          default: 80
+          maximum: 1000
+        name:
+          type: string
+          title: name
+  data_diskSize:
+    type: integer
+    title: Data Disk Size (GB)
+    minimum: 50
+    maximum: 5000
+    default: 1000
+resources:
+  Custom_antiaffinity:
+    type: Custom.antiaffinity
+    dependsOn:
+      - dse_vm
+    properties:
+      ruleName: ${env.blueprintName}-rule
+      vmStringArray: ${map_by(resource.dse_vm[*].resourceName, name => to_string(name))}
+  Ansible_API:
+    type: Custom.AAP
+    properties:
+      aapSSL: false
+      verbose: true
+      organization_name: Default
+      inventory_name: ${env.blueprintName}-${env.deploymentId}
+      job_template_name: DataStax Enterprise Template
+      hosts:
+        - ${resource.dse_vm.*}
+      inventory_variables:
+        use_ssl: true
+        disk_names: ${filter_by(resource.disk.name, (k,v) => v >= 0 && v < length(input.diskConfig))}
+      group_variables:
+        dse:
+          color: blue
+          enabled: true
+      host_variables:
+        dse_vm:
+          rack: 1
+      host_groups:
+        dse:
+          - ${resource.dse_vm.*}
+        dse_dc1:
+          - ${resource.dse_vm.*}
+  dse_vm:
+    type: Cloud.vSphere.Machine
+    allocatePerInstance: true
+    properties:
+      count: ${input.dse_host_count}
+      image: ${input.vmImage}
+      flavor: ${input.vmSize}
+      name: ${'dse-' + to_string(count.index)}
+      remoteAccess:
+        authentication: usernamePassword
+        username: ${input.vmUsername}
+        password: ${input.vmPassword}
+      networks:
+        - network: ${resource.web_net.id}
+          assignment: static
+          domain: dse.net
+      cloudConfigSettings:
+        deploymentFailOnCloudConfigRuntimeError: true
+      cloudConfig: |
+        #cloud-config
+        hostname: ${self.resourceName}
+        users:
+          - default
+          - name: ${input.vmUsername}
+            shell: /bin/bash
+            sudo: ALL=(ALL) NOPASSWD:ALL 
+        ssh_pwauth: true
+        runcmd:
+          - netplan apply
+        ssh_pwauth: true
+        runcmd:
+          - netplan apply    
+      attachedDisks: ${map_to_object(slice(resource.disk[*].id, length(input.diskConfig) * count.index, length(input.diskConfig) * (count.index + 1)), "source")}
+      storage:
+        bootDiskCapacityInGB: ${input.os_diskSize}
+  disk:
+    type: Cloud.vSphere.Disk
+    allocatePerInstance: true
+    properties:
+      capacityGb: ${input.diskConfig[count.index % length(input.diskConfig)].size}
+      SCSIController: ${'SCSI_Controller_' + to_string(count.index % 4)}
+      name: ${input.diskConfig[count.index % length(input.diskConfig)].name}
+      tags:
+        - key: App
+          value: ${to_string('dse' + count.index)}
+      count: ${input.dse_host_count * length(input.diskConfig)}
+  web_net:
+    type: Cloud.NSX.Network
+    properties:
+      name: ls-web
+      networkType: routed
