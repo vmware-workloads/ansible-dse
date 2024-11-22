@@ -61,12 +61,6 @@ inputs:
         name:
           type: string
           title: name
-  data_diskSize:
-    type: integer
-    title: Data Disk Size (GB)
-    minimum: 50
-    maximum: 5000
-    default: 1000
 resources:
   Custom_antiaffinity:
     type: Custom.AntiAffinityCR
