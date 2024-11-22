@@ -12,7 +12,6 @@ The automation will then be available in Service Broker.  
     per the name):
 
     -   dse-16vcpu-48gb
-
     -   dse-16vcpu-64gb
 
 -   Note: pulls Ubuntu images from the web. If required, alter the template to
