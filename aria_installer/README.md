@@ -28,6 +28,8 @@ The automation will then be available in Service Broker.  
 
 -   Aria Automation 8.16 or higher
 
+-   Appropriate Cloud Zone added to Aria Project
+
 -   vRO connected to vCenter (as per
     https://docs.vmware.com/en/VMware-Aria-Automation/8.18/Using-Automation-Orchestrator-Plugins/GUID-C2EC619C-EAB0-43BB-98E4-7E54C6AA4CFD.html)
 
