@@ -99,7 +99,7 @@ resources:
     allocatePerInstance: true
     properties:
       count: ${input.dse_host_count}
-      image: ${input.vmImage}
+      imageref: ${input.vmImage}
       flavor: ${input.vmSize}
       name: ${'dse-' + to_string(count.index)}
       remoteAccess:
